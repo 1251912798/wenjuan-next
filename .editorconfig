@@ -14,7 +14,7 @@ indent_brace_style = 1tbs           # 条件语句格式是 1tbs
 [*.js]                              # 对所有的 js 文件生效
 quote_type = single                 # 字符串使用单引号
 
-[*.{html,less,css,json}]            # 对所有 html, less, css, json 文件生效
+[*.{html,less,css,json,scss}]            # 对所有 html, less, css, json 文件生效
 quote_type = double                 # 字符串使用双引号
 
 [package.json]                      # 对 package.json 生效

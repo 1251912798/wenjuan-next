@@ -1,7 +1,11 @@
 import Head from 'next/head';
 import React from 'react';
 
-const About = () => {
+interface AboutProps {
+  info: string;
+}
+
+const About = ({ info }: AboutProps) => {
   return (
     <>
       <Head>
@@ -10,9 +14,40 @@ const About = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>ABoout</main>
+      <main>
+        <h1>ABoout</h1>
+        <p>{info}</p>
+      </main>
     </>
   );
 };
+
+/*
+  StaticGeneration静态渲染 只在build时构建
+  当在线上环境时每次请求或刷新不在执行
+*/
+// 固定名字不能修改
+// export const getStaticProps = async () => {
+//   return {
+//     props: {
+//       info: 'hello world',
+//     },
+//   };
+// };
+
+/*
+  Server-side Rendering 动态渲染
+  线上环境时每次请求都会运行
+*/
+
+export async function getServerSideProps() {
+  console.log('nihao1');
+
+  return {
+    props: {
+      info: 'hello world',
+    },
+  };
+}
 
 export default About;
