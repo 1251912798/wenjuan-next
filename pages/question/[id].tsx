@@ -1,43 +1,112 @@
-import React from 'react';
-import QusetionInput from '@/component/questionInput';
-import QusetionRadio from '@/component/qusetionRadio';
+import PageWrapper from '@/component/pageWrapper';
+import QusetionInput from '@/component/quseitonComponents/questionInput';
+import QusetionRadio from '@/component/quseitonComponents/qusetionRadio';
+import { getCompnentApi } from '@/services/question';
+import { getComponent } from '@/component/index';
+
+import styles from '@/styles/Home.module.scss';
 
 interface QusetionProps {
-  id: string;
+  code: number;
+  data?: {
+    id: string;
+    title: string;
+    desc?: string;
+    js?: string;
+    css?: string;
+    isPublished: boolean;
+    isDeleted: boolean;
+    componentList: Array<any>;
+  };
+  msg?: string;
 }
 
-const Qusetion = ({ id }: QusetionProps) => {
+const Qusetion = ({ code, data, msg = '' }: QusetionProps) => {
+  if (code !== 0) {
+    return (
+      <PageWrapper title="错误">
+        <h1>错误</h1>
+        <p>{msg}</p>
+      </PageWrapper>
+    );
+  }
+  const {
+    id,
+    title,
+    desc = '',
+    js = '',
+    css = '',
+    isPublished,
+    isDeleted,
+    componentList = [],
+  } = data || {};
+
+  if (isDeleted) {
+    return (
+      <PageWrapper title={title as string} desc={desc}>
+        <h1>该问卷已删除</h1>
+      </PageWrapper>
+    );
+  }
+  if (!isPublished) {
+    return (
+      <PageWrapper title={title as string} desc={desc}>
+        <h1>该问卷未发布</h1>
+      </PageWrapper>
+    );
+  }
+
+  const Component = componentList.map(item => {
+    const Element = getComponent(item);
+    return (
+      <div key={item.fe_id} className={styles.questionsWrap}>
+        {Element}
+      </div>
+    );
+  });
+
   return (
-    <>
-      {/* <h1>Qusetion</h1> */}
-      {/* {id} */}
-      <QusetionInput
-        fe_id="c1"
-        props={{ title: '姓名', placeholder: '请输入姓名' }}
-      />
-      <QusetionRadio
-        fe_id="c2"
-        props={{
-          title: '工作年限',
-          isColum: false,
-          value: 'item1',
-          options: [
-            { value: 'item1', label: '选项1' },
-            { value: 'item2', label: '选项2' },
-            { value: 'item3', label: '选项3' },
-          ],
-        }}
-      />
-    </>
+    <PageWrapper title={title as string} desc={desc}>
+      <form method="post" action="/api/answer">
+        <input type="hidden" name="questionId" value={id} />
+        {Component}
+        {/* <div className={styles.questionsWrap}>
+          <QusetionInput
+            fe_id="c1"
+            props={{ title: '姓名', placeholder: '请输入姓名' }}
+          />
+        </div>
+        <div className={styles.questionsWrap}>
+          <QusetionRadio
+            fe_id="c2"
+            props={{
+              title: '工作年限',
+              isColum: false,
+              value: 'item1',
+              options: [
+                { value: 'item1', label: '选项1' },
+                { value: 'item2', label: '选项2' },
+                { value: 'item3', label: '选项3' },
+              ],
+            }}
+          />
+        </div> */}
+
+        <div className={styles.submitContent}>
+          <button type="submit">提交</button>
+        </div>
+      </form>
+    </PageWrapper>
   );
 };
 
 export async function getServerSideProps(context: any) {
   const { id = '' } = context.params;
+
+  const res = await getCompnentApi(id);
+
   return {
-    props: {
-      id,
-    },
+    props: res,
   };
 }
 
