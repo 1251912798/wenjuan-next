@@ -70,28 +70,6 @@ const Qusetion = ({ code, data, msg = '' }: QusetionProps) => {
       <form method="post" action="/api/answer">
         <input type="hidden" name="questionId" value={id} />
         {Component}
-        {/* <div className={styles.questionsWrap}>
-          <QusetionInput
-            fe_id="c1"
-            props={{ title: '姓名', placeholder: '请输入姓名' }}
-          />
-        </div>
-        <div className={styles.questionsWrap}>
-          <QusetionRadio
-            fe_id="c2"
-            props={{
-              title: '工作年限',
-              isColum: false,
-              value: 'item1',
-              options: [
-                { value: 'item1', label: '选项1' },
-                { value: 'item2', label: '选项2' },
-                { value: 'item3', label: '选项3' },
-              ],
-            }}
-          />
-        </div> */}
-
         <div className={styles.submitContent}>
           <button type="submit">提交</button>
         </div>

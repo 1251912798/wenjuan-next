@@ -4,3 +4,7 @@
   box-sizing: border-box;
 }
 
+
+ul,li,ol {
+  list-style: none;
+}
