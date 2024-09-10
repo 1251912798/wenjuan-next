@@ -1,4 +1,5 @@
 import styles from '@/styles/component/questionSelectBox.module.scss';
+import { ChangeEvent, useState } from 'react';
 
 type optionType = {
   value: string;
@@ -16,13 +17,20 @@ interface QuestionSelectBoxProps {
 
 const QuestionSelectBox = ({ fe_id, props }: QuestionSelectBoxProps) => {
   const { title, options = [], defaultValue } = props;
+  const [selectValue, setSelectValue] = useState('');
+
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectValue(e.target.value);
+  };
+
   return (
     <>
       <p>{title}</p>
+      <input type="hidden" name={fe_id} value={selectValue} />
       <select
-        name={fe_id}
         defaultValue={defaultValue}
         className={styles.selectBox}
+        onChange={handleChange}
       >
         <option value="">请选择...</option>
         {options.map(item => {

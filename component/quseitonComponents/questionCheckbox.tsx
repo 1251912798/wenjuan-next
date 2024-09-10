@@ -17,7 +17,7 @@ interface QuestionCheckboxProps {
 
 const QuestionCheckbox = ({ fe_id, props }: QuestionCheckboxProps) => {
   const { title, isColumn, list = [] } = props;
-  const [checkArr, setCheckArr] = useState<String[]>([]);
+  const [checkArr, setCheckArr] = useState<string[]>([]);
 
   // checked 的变化
   const handlerChange = (val: string) => {
@@ -42,7 +42,11 @@ const QuestionCheckbox = ({ fe_id, props }: QuestionCheckboxProps) => {
   return (
     <>
       <p>{title}</p>
-      <input type="hidden" name={fe_id} value={checkArr.toString()} />
+      <input
+        type="hidden"
+        name={fe_id + 'questionCheckbox'}
+        value={JSON.stringify(checkArr)}
+      />
       <ul className={styles.ulList}>
         {list.map(item => {
           let classname = '';

@@ -9,10 +9,18 @@ function ReqBody(reqBody: any) {
 
   Object.keys(reqBody).forEach(item => {
     if (item === 'questionId') return;
-    answerList.push({
-      componentId: item,
-      value: reqBody[item],
-    });
+    if (item.includes('questionCheckbox')) {
+      item = item.replace('questionCheckbox', '');
+      answerList.push({
+        componentId: item,
+        value: JSON.parse(reqBody[item + 'questionCheckbox']),
+      });
+    } else {
+      answerList.push({
+        componentId: item,
+        value: reqBody[item],
+      });
+    }
   });
 
   return {
@@ -32,8 +40,6 @@ export default async function handler(
 
   try {
     const resData = await postAnswer(data);
-    console.log(resData);
-
     if (resData.code === 0) {
       // 提交成功
       res.redirect('/success');
@@ -44,6 +50,5 @@ export default async function handler(
   } catch (error) {
     res.redirect('/fail');
   }
-  console.log(data);
   res.status(200).json({ errno: 0 });
 }

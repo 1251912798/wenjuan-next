@@ -41,8 +41,6 @@ const About = ({ info }: AboutProps) => {
 */
 
 export async function getServerSideProps() {
-  console.log('nihao1');
-
   return {
     props: {
       info: 'hello world',

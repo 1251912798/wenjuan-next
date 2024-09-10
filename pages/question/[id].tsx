@@ -5,11 +5,12 @@ import { getCompnentApi } from '@/services/question';
 import { getComponent } from '@/component/index';
 
 import styles from '@/styles/Home.module.scss';
+import { useEffect, useRef } from 'react';
 
 interface QusetionProps {
   code: number;
   data?: {
-    id: string;
+    _id: string;
     title: string;
     desc?: string;
     js?: string;
@@ -22,6 +23,13 @@ interface QusetionProps {
 }
 
 const Qusetion = ({ code, data, msg = '' }: QusetionProps) => {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    const form = formRef?.current;
+    return () => form?.reset();
+  }, []);
+
   if (code !== 0) {
     return (
       <PageWrapper title="错误">
@@ -30,8 +38,9 @@ const Qusetion = ({ code, data, msg = '' }: QusetionProps) => {
       </PageWrapper>
     );
   }
+
   const {
-    id,
+    _id: id,
     title,
     desc = '',
     js = '',
@@ -67,7 +76,7 @@ const Qusetion = ({ code, data, msg = '' }: QusetionProps) => {
 
   return (
     <PageWrapper title={title as string} desc={desc}>
-      <form method="post" action="/api/answer">
+      <form ref={formRef} method="post" action="/api/answer">
         <input type="hidden" name="questionId" value={id} />
         {Component}
         <div className={styles.submitContent}>

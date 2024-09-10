@@ -19,7 +19,7 @@ interface QusetionRadioProps {
 const QusetionRadio = ({ fe_id, props }: QusetionRadioProps) => {
   const { title, isColum, value: val, options = [] } = props;
 
-  const [selectValue, setSelectValue] = useState('');
+  const [selectValue, setSelectValue] = useState<string>('');
 
   const handleChange = (value: string) => {
     setSelectValue(value);
@@ -28,23 +28,19 @@ const QusetionRadio = ({ fe_id, props }: QusetionRadioProps) => {
   return (
     <>
       <p>{title}</p>
-      <input type="hidden" name={fe_id} value={selectValue} />
       <ul className={styles.radiolist}>
         {options.map(item => {
           const { value = '', label } = item;
 
-          let classname = '';
-          if (isColum) {
-            classname = styles.verticalList;
-          } else {
-            classname = styles.horizontaList;
-          }
+          let classname = isColum ? styles.verticalList : styles.horizontaList;
+
           return (
             <li key={value} className={classname}>
-              <label>
+              <label onClick={() => handleChange(value)}>
                 <input
                   type="radio"
-                  onChange={() => handleChange(value)}
+                  name={fe_id}
+                  value={value}
                   defaultChecked={val === value}
                 />
                 {label}
